@@ -13,13 +13,16 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        DatabaseManager.initializeDatabaseManager(this);
+
     }
 
     void showFragment(){
-        CurrentShowingFragmentName currentShowingFragmentName = DatabaseManager.getInstance().getCurrentShowingFragmentName(this);
+        CurrentShowingFragmentName currentShowingFragmentName = DatabaseManager.getInstance().getCurrentShowingFragmentName();
         if(currentShowingFragmentName == null){
             currentShowingFragmentName = CurrentShowingFragmentName.TUITION_LIST;
-            DatabaseManager.getInstance().storeCurrentShowingFragmentName(this, currentShowingFragmentName);
+            DatabaseManager.getInstance().storeCurrentShowingFragmentName(currentShowingFragmentName);
         }
         Log.d(DEBUG_TAG, "Showing Fragment :"+ String.valueOf(currentShowingFragmentName));
 
