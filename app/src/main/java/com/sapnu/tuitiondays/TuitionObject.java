@@ -1,8 +1,9 @@
 package com.sapnu.tuitiondays;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-class TuitionObject {
+class TuitionObject implements Serializable {
     private String tuitionName;
     private ArrayList<String> tuitionDays;
 

@@ -7,4 +7,13 @@
     <string name="def_banner_id">ca-app-pub-3940256099942544/6300978111</string>
     <string name="def_app_id">ca-app-pub-3940256099942544~3347511713</string>
 
+    <string name="date_example">2019 03 01 12:00:00 sun</string>
+    <string name="delete_tuition_day">deleteTuitionDay</string>
+    <string name="tuition_name_example">Tuition_X</string>
+    <string name="default_content_description">DefaultContentDescription</string>
+    <string name="menu_item_add_day">Add Day</string>
+    <string name="menu_item_delete_all_day">Delete all Day</string>
+    <string name="add_new_tution">Add New Tution</string>
+    <string name="tution_day_list">tution day list</string>
+
 </resources>
