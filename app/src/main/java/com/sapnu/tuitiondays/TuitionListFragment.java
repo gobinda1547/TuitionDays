@@ -110,17 +110,20 @@ public class TuitionListFragment extends MyFragment {
         public void onBindViewHolder(@NonNull final TuitionListViewHolder tuitionListViewHolder, @SuppressLint("RecyclerView") int i) {
             TuitionObject currentTuitionObject = tuitionObjectArrayList.get(i);
             tuitionListViewHolder.showTuitionNameTextView.setText(currentTuitionObject.getTuitionName());
+            tuitionListViewHolder.showTuitionTotalDayTextView.setText("Total day : "+String.valueOf(currentTuitionObject.getTuitionDays().size()));
         }
 
         class TuitionListViewHolder extends RecyclerView.ViewHolder{
 
             private TextView showTuitionNameTextView;
+            private TextView showTuitionTotalDayTextView;
             private ImageButton deleteTuitionNameImageButton;
 
             private TuitionListViewHolder(View itemView) {
                 super(itemView);
 
                 showTuitionNameTextView = itemView.findViewById(R.id.ShowTuitionNameTextView);
+                showTuitionTotalDayTextView = itemView.findViewById(R.id.ShowTuitionTotalDayTextView);
                 deleteTuitionNameImageButton = itemView.findViewById(R.id.DeleteTuitionNameImageButton);
 
                 showTuitionNameTextView.setOnClickListener(v -> {
@@ -128,6 +131,7 @@ public class TuitionListFragment extends MyFragment {
                     Log.d(DEBUG_TAG, "requesting for showing tuition day list");
                     myFragmentListener.changeFragmentTo(CurrentShowingFragmentName.TUITION_DAY_LIST);
                 });
+
                 deleteTuitionNameImageButton.setOnClickListener(v -> {
                     //taking user permission for delete by showing dialog box
                     AlertDialog.Builder builder2 = new AlertDialog.Builder(getActivity());
