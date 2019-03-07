@@ -2,30 +2,32 @@
 <android.support.v7.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="30dp"
+    android:layout_height="40dp"
     android:layout_margin="1dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="30dp"
+        android:layout_height="40dp"
         android:layout_alignParentTop="true">
 
         <TextView
             android:id="@+id/ShowTuitionDateTextView"
             android:layout_width="match_parent"
-            android:layout_height="30dp"
+            android:layout_height="match_parent"
             android:gravity="center_vertical"
             android:paddingLeft="5dp"
             android:paddingRight="0dp"
             android:paddingStart="5dp"
             android:paddingEnd="0dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginStart="5dp"
             android:text="@string/date_example"
             android:textSize="20sp"/>
 
         <ImageButton
             android:id="@+id/DeleteTuitionDateImageButton"
             android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
             android:src="@android:drawable/ic_delete"

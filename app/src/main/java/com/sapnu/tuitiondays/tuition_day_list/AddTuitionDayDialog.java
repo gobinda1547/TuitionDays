@@ -42,7 +42,7 @@ public class AddTuitionDayDialog extends Dialog {
             //since it's 0 index based we have to make it 1 based
             month = month + 1;
 
-            @SuppressLint("DefaultLocale") String selection = String.format("selected = %d/%d/%d", day, month, year);
+            @SuppressLint("DefaultLocale") String selection = String.format("%d / %d / %d", year, month, day);
             Log.d(DEBUG, selection);
             callBacks.dialogSavePressed(selection);
         });

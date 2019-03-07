@@ -1,7 +1,12 @@
 package com.sapnu.tuitiondays.tuition_day_list;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -17,8 +22,14 @@ import com.sapnu.tuitiondays.entity.MyFragmentCallBacks;
 import com.sapnu.tuitiondays.R;
 import com.sapnu.tuitiondays.database.DatabaseManager;
 
+import java.util.ArrayList;
+
 public class TuitionDayListFragment extends MyFragment implements DatePickerDialog.OnDateSetListener {
     private static final String DEBUG_TAG = "[GPTuitionDayListFrag]";
+
+
+    private String selectedTuitionName = null;
+    private RecyclerView recyclerView;
 
     private MyFragmentCallBacks myFragmentCallBacks;
 
@@ -28,14 +39,11 @@ public class TuitionDayListFragment extends MyFragment implements DatePickerDial
         // Required empty public constructor
     }
 
-
-
-    private TextView textView;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_tuition_day_list, container, false);
-        textView = view.findViewById(R.id.example);
+        recyclerView = view.findViewById(R.id.TuitionDayListRecyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         return view;
     }
 
@@ -49,14 +57,8 @@ public class TuitionDayListFragment extends MyFragment implements DatePickerDial
     public void onResume() {
         super.onResume();
         Log.d(DEBUG_TAG, "onResume called");
-        String name = DatabaseManager.getInstance().getTuitionNameSelectedValue();
-        if (name == null) {
-            name = "null";
-        }
-        if (textView == null) {
-            Log.d(DEBUG_TAG, "text view is null");
-        }
-        textView.setText(name);
+        selectedTuitionName = DatabaseManager.getInstance().getTuitionNameSelectedValue();
+        refreshRecycleView();
     }
 
     @Override
@@ -89,7 +91,74 @@ public class TuitionDayListFragment extends MyFragment implements DatePickerDial
         Log.d(DEBUG_TAG, String.format("date input = %d/%d/%d", dayOfMonth, monthOfYear, year));
     }
 
-    public class AddTuitionDayDialogCallBackHandler implements AddTuitionDayDialogCallBacks{
+
+    public void refreshRecycleView(){
+        ArrayList<String> tuitionDayList = DatabaseManager.getInstance().getTuitionDayList(selectedTuitionName);
+        MyRecyclerViewAdapter recyclerViewAdapter = new MyRecyclerViewAdapter(tuitionDayList);
+        recyclerView.setAdapter(recyclerViewAdapter);
+    }
+
+
+    public class MyRecyclerViewAdapter extends RecyclerView.Adapter<TuitionDayListFragment.MyRecyclerViewAdapter.TuitionDayListViewHolder> {
+
+        private ArrayList<String> tuitionDaysArrayList;
+
+        private MyRecyclerViewAdapter(ArrayList<String> tuitionDaysArrayList) {
+            this.tuitionDaysArrayList = tuitionDaysArrayList;
+        }
+
+        @Override
+        public int getItemCount() {
+            return tuitionDaysArrayList.size();
+        }
+
+        @NonNull
+        @Override
+        public TuitionDayListFragment.MyRecyclerViewAdapter.TuitionDayListViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, final int i) {
+            View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.layout_tuition_day, viewGroup, false);
+            return new TuitionDayListFragment.MyRecyclerViewAdapter.TuitionDayListViewHolder(v);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull final TuitionDayListFragment.MyRecyclerViewAdapter.TuitionDayListViewHolder tuitionDayListViewHolder, @SuppressLint("RecyclerView") int i) {
+            String currentTuitionDate = tuitionDaysArrayList.get(i);
+            tuitionDayListViewHolder.showTuitionDateTextView.setText(currentTuitionDate);
+        }
+
+        class TuitionDayListViewHolder extends RecyclerView.ViewHolder {
+
+            private TextView showTuitionDateTextView;
+
+            private TuitionDayListViewHolder(View itemView) {
+                super(itemView);
+
+                showTuitionDateTextView = itemView.findViewById(R.id.ShowTuitionDateTextView);
+
+                itemView.findViewById(R.id.DeleteTuitionDateImageButton).setOnClickListener(v -> {
+                    Log.d(DEBUG_TAG, "delete button pressed");
+
+                    //taking user permission for delete by showing dialog box
+                    AlertDialog.Builder builder2 = new AlertDialog.Builder(getActivity());
+                    builder2.setTitle("Delete " + showTuitionDateTextView.getText().toString());
+                    builder2.setMessage("Are you sure to delete this tuition date forever?");
+                    builder2.setPositiveButton("YES", (dialog, which) -> {
+                        String tuitionName = DatabaseManager.getInstance().getTuitionNameSelectedValue();
+                        String deleteDate = showTuitionDateTextView.getText().toString();
+                        DatabaseManager.getInstance().deleteTuitionDay(tuitionName, deleteDate);
+                        Toast.makeText(getActivity(), "Deleted successfully!", Toast.LENGTH_SHORT).show();
+                        dialog.dismiss();
+                        refreshRecycleView();
+                    });
+                    builder2.setNegativeButton("NO", (dialog, which) -> dialog.dismiss());
+
+                    AlertDialog alert2 = builder2.create();
+                    alert2.show();
+                });
+            }
+        }
+    }
+
+    public class AddTuitionDayDialogCallBackHandler implements AddTuitionDayDialogCallBacks {
 
         @Override
         public void dialogCancelPressed() {
@@ -100,6 +169,9 @@ public class TuitionDayListFragment extends MyFragment implements DatePickerDial
         @Override
         public void dialogSavePressed(String date) {
             Log.d(DEBUG_TAG, "selected string " + date);
+            DatabaseManager.getInstance().addTuitionDay(selectedTuitionName, date);
+            refreshRecycleView();
+            Toast.makeText(getActivity(), "Date saved!", Toast.LENGTH_SHORT).show();
             addTuitionDayDialog.dismiss();
         }
     }

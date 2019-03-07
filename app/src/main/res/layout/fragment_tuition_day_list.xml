@@ -7,10 +7,11 @@
     tools:context=".tuition_day_list.TuitionDayListFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:id="@+id/example"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/TuitionDayListRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/tution_day_list" />
+        android:layout_marginTop="2dp">
+    </android.support.v7.widget.RecyclerView>
 
 </android.support.v7.widget.CardView>
