@@ -5,7 +5,7 @@ import android.content.SharedPreferences;
 import android.util.Base64;
 import android.util.Log;
 
-import com.sapnu.tuitiondays.entity.CurrentShowingFragmentName;
+import com.sapnu.tuitiondays.entity.MyFragmentNames;
 import com.sapnu.tuitiondays.entity.TuitionObject;
 
 import java.io.ByteArrayInputStream;
@@ -54,12 +54,12 @@ public class DatabaseManager {
         this.sharedPreferencesForTuitionNameSelected = sharedPreferencesForTuitionNameSelected;
     }
 
-    public void storeCurrentShowingFragmentName(CurrentShowingFragmentName currentShowingFragmentName) {
+    public void storeCurrentFragmentNameAsLastlyShowed(MyFragmentNames lastFragment) {
         try {
             //Initialize serialized data
             ByteArrayOutputStream serializedData = new ByteArrayOutputStream();
             ObjectOutputStream serializer = new ObjectOutputStream(serializedData);
-            serializer.writeObject(currentShowingFragmentName);
+            serializer.writeObject(lastFragment);
 
             //Insert serialized object into shared preferences
             SharedPreferences.Editor edit = sharedPreferencesForSavingFragmentName.edit();
@@ -73,8 +73,8 @@ public class DatabaseManager {
     }
 
     @SuppressWarnings("unchecked")
-    public CurrentShowingFragmentName getCurrentShowingFragmentName() {
-        CurrentShowingFragmentName currentShowingFragmentName = null;
+    public MyFragmentNames getLastSavedFragmentName() {
+        MyFragmentNames lastSavedFragmentName = null;
 
         String serializedData = sharedPreferencesForSavingFragmentName.getString(SHARED_PREF_KEY_FOR_CURRENT_FRAGMENT_NAME, null);
         if(serializedData == null){
@@ -85,11 +85,11 @@ public class DatabaseManager {
         try {
             ByteArrayInputStream input = new ByteArrayInputStream(Base64.decode(serializedData, Base64.DEFAULT));
             ObjectInputStream inputStream = new ObjectInputStream(input);
-            currentShowingFragmentName = (CurrentShowingFragmentName) inputStream.readObject();
+            lastSavedFragmentName = (MyFragmentNames) inputStream.readObject();
         } catch (IOException|ClassNotFoundException|java.lang.IllegalArgumentException e) {
             e.printStackTrace();
         }
-        return currentShowingFragmentName;
+        return lastSavedFragmentName;
     }
 
 

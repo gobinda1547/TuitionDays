@@ -15,9 +15,9 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.sapnu.tuitiondays.entity.CurrentShowingFragmentName;
+import com.sapnu.tuitiondays.entity.MyFragmentNames;
 import com.sapnu.tuitiondays.entity.MyFragment;
-import com.sapnu.tuitiondays.entity.MyFragmentListener;
+import com.sapnu.tuitiondays.entity.MyFragmentCallBacks;
 import com.sapnu.tuitiondays.R;
 import com.sapnu.tuitiondays.database.DatabaseManager;
 import com.sapnu.tuitiondays.entity.TuitionObject;
@@ -27,7 +27,7 @@ import java.util.ArrayList;
 public class TuitionListFragment extends MyFragment {
     private static final String DEBUG_TAG = "[GPTuitionListFragment]";
 
-    private MyFragmentListener myFragmentListener;
+    private MyFragmentCallBacks myFragmentCallBacks;
 
     private RecyclerView recyclerView;
 
@@ -70,8 +70,8 @@ public class TuitionListFragment extends MyFragment {
     }
 
     @Override
-    public void setMyFragmentListener(MyFragmentListener myFragmentListener) {
-        this.myFragmentListener = myFragmentListener;
+    public void setMyFragmentCallBacks(MyFragmentCallBacks myFragmentCallBacks) {
+        this.myFragmentCallBacks = myFragmentCallBacks;
     }
 
     @Override
@@ -133,7 +133,7 @@ public class TuitionListFragment extends MyFragment {
                     Log.d(DEBUG_TAG, "card view pressed");
                     DatabaseManager.getInstance().storeTuitionNameSelected(showTuitionNameTextView.getText().toString());
                     Log.d(DEBUG_TAG, "requesting for showing tuition day list");
-                    myFragmentListener.changeFragmentTo(CurrentShowingFragmentName.TUITION_DAY_LIST);
+                    myFragmentCallBacks.showFragment(MyFragmentNames.TUITION_DAY_LIST);
                 });
 
                 showTuitionNameTextView = itemView.findViewById(R.id.ShowTuitionNameTextView);

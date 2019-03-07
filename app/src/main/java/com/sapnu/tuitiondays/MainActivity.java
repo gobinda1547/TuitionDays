@@ -18,13 +18,13 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 import com.sapnu.tuitiondays.database.DatabaseManager;
-import com.sapnu.tuitiondays.entity.CurrentShowingFragmentName;
+import com.sapnu.tuitiondays.entity.MyFragmentNames;
 import com.sapnu.tuitiondays.entity.MyFragment;
 import com.sapnu.tuitiondays.tuition_day_list.TuitionDayListFragment;
 import com.sapnu.tuitiondays.tuition_list.TuitionListFragment;
-import com.sapnu.tuitiondays.entity.MyFragmentListener;
+import com.sapnu.tuitiondays.entity.MyFragmentCallBacks;
 
-public class MainActivity extends AppCompatActivity implements MyFragmentListener {
+public class MainActivity extends AppCompatActivity implements MyFragmentCallBacks {
     private static final String DEBUG_TAG = "[GPMainActivity]";
 
     private static boolean MOBILE_ADS_INITIALIZED = false;
@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity implements MyFragmentListene
     private AdView mAdView;
 
     private MyFragment currentShowingFragment;
-    private CurrentShowingFragmentName currentShowingFragmentName;
+    private MyFragmentNames lastSavedFragmentName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,20 +46,20 @@ public class MainActivity extends AppCompatActivity implements MyFragmentListene
 
         DatabaseManager.initializeDatabaseManager(this);
 
-        showFragment();
+        showLastSavedFragment();
 
         new Handler().postDelayed(this::initializeMobileAds, 100);
     }
 
-    void showFragment(){
-        currentShowingFragmentName = DatabaseManager.getInstance().getCurrentShowingFragmentName();
-        if(currentShowingFragmentName == null){
-            currentShowingFragmentName = CurrentShowingFragmentName.TUITION_LIST;
-            DatabaseManager.getInstance().storeCurrentShowingFragmentName(currentShowingFragmentName);
+    void showLastSavedFragment(){
+        lastSavedFragmentName = DatabaseManager.getInstance().getLastSavedFragmentName();
+        if(lastSavedFragmentName == null){
+            lastSavedFragmentName = MyFragmentNames.TUITION_LIST;
+            DatabaseManager.getInstance().storeCurrentFragmentNameAsLastlyShowed(lastSavedFragmentName);
         }
-        Log.d(DEBUG_TAG, "Showing Fragment :"+ String.valueOf(currentShowingFragmentName));
+        Log.d(DEBUG_TAG, "Showing Fragment :"+ String.valueOf(lastSavedFragmentName));
 
-        switch (currentShowingFragmentName){
+        switch (lastSavedFragmentName){
             case TUITION_LIST:
                 currentShowingFragment = new TuitionListFragment();
                 break;
@@ -67,22 +67,14 @@ public class MainActivity extends AppCompatActivity implements MyFragmentListene
                 currentShowingFragment = new TuitionDayListFragment();
                 break;
         }
-        currentShowingFragment.setMyFragmentListener(this);
+        currentShowingFragment.setMyFragmentCallBacks(this);
 
-        //before changing fragment
-
-
-        //when changing fragment
         FragmentManager fm = getFragmentManager();
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
         fragmentTransaction.replace(R.id.fragment_container, currentShowingFragment);
         fragmentTransaction.show(currentShowingFragment);
         fragmentTransaction.commit();
-
-        Log.d(DEBUG_TAG, "i think problem is here");
-
-        //after changing fragment
-
+        Log.d(DEBUG_TAG, "showing fragment done!");
     }
 
     @Override
@@ -108,7 +100,7 @@ public class MainActivity extends AppCompatActivity implements MyFragmentListene
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        switch (currentShowingFragmentName){
+        switch (lastSavedFragmentName){
             case TUITION_LIST:
                 getMenuInflater().inflate(R.menu.tuition_list_menu, menu);
                 break;
@@ -120,14 +112,24 @@ public class MainActivity extends AppCompatActivity implements MyFragmentListene
     }
 
     @Override
-    public void changeFragmentTo(CurrentShowingFragmentName fragmentName) {
-        Log.d(DEBUG_TAG, "fragment changing request received");
-        DatabaseManager.getInstance().storeCurrentShowingFragmentName(fragmentName);
+    public void showFragment(MyFragmentNames fragmentName) {
+        lastSavedFragmentName = fragmentName;
+        Log.d(DEBUG_TAG, "fragment changing request received, removing all the previous fragments");
+
+        //saving this fragment as last showed fragment
+        DatabaseManager.getInstance().storeCurrentFragmentNameAsLastlyShowed(fragmentName);
+
+        FragmentManager fragmentManager = getFragmentManager();
+        Log.d(DEBUG_TAG, "previous fragments found total = " + String.valueOf(fragmentManager.getBackStackEntryCount()));
+        while (fragmentManager.getBackStackEntryCount() > 0) {
+            fragmentManager.popBackStackImmediate();
+        }
 
         //before changin the fragment we should change the menu
+        //as call back this function will call onPrepareOptionsMenu method
         super.invalidateOptionsMenu();
 
-        showFragment();
+        showLastSavedFragment();
     }
 
     @Override

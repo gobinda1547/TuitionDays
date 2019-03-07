@@ -11,16 +11,16 @@ import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.sapnu.tuitiondays.entity.CurrentShowingFragmentName;
+import com.sapnu.tuitiondays.entity.MyFragmentNames;
 import com.sapnu.tuitiondays.entity.MyFragment;
-import com.sapnu.tuitiondays.entity.MyFragmentListener;
+import com.sapnu.tuitiondays.entity.MyFragmentCallBacks;
 import com.sapnu.tuitiondays.R;
 import com.sapnu.tuitiondays.database.DatabaseManager;
 
 public class TuitionDayListFragment extends MyFragment implements DatePickerDialog.OnDateSetListener {
     private static final String DEBUG_TAG = "[GPTuitionDayListFrag]";
 
-    private MyFragmentListener myFragmentListener;
+    private MyFragmentCallBacks myFragmentCallBacks;
 
     private AddTuitionDayDialog addTuitionDayDialog;
 
@@ -28,34 +28,7 @@ public class TuitionDayListFragment extends MyFragment implements DatePickerDial
         // Required empty public constructor
     }
 
-    public void setMyFragmentListener(MyFragmentListener myFragmentListener) {
-        this.myFragmentListener = myFragmentListener;
-    }
 
-    @Override
-    public boolean handleBackButtonPressed() {
-        myFragmentListener.changeFragmentTo(CurrentShowingFragmentName.TUITION_LIST);
-        return true;
-    }
-
-    @Override
-    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-        Log.d(DEBUG_TAG, String.format("date input = %d/%d/%d", dayOfMonth, monthOfYear, year));
-    }
-
-    @Override
-    public void handleMenuItemSelection(MenuItem menuItem) {
-        switch (menuItem.getItemId()) {
-            case R.id.AddTuitionDayMenuItem:
-                addTuitionDayDialog = new AddTuitionDayDialog(getActivity(), new AddTuitionDayDialogCallBackHandler());
-                addTuitionDayDialog.setCancelable(false);
-                addTuitionDayDialog.show();
-                break;
-            case R.id.DeleteAllTuitionDaysMenuItem:
-                Toast.makeText(getActivity(), "Delete all tuition days", Toast.LENGTH_SHORT).show();
-                break;
-        }
-    }
 
     private TextView textView;
 
@@ -86,6 +59,35 @@ public class TuitionDayListFragment extends MyFragment implements DatePickerDial
         textView.setText(name);
     }
 
+    @Override
+    public void setMyFragmentCallBacks(MyFragmentCallBacks myFragmentCallBacks) {
+        this.myFragmentCallBacks = myFragmentCallBacks;
+    }
+
+    @Override
+    public boolean handleBackButtonPressed() {
+        myFragmentCallBacks.showFragment(MyFragmentNames.TUITION_LIST);
+        return true;
+    }
+
+    @Override
+    public void handleMenuItemSelection(MenuItem menuItem) {
+        switch (menuItem.getItemId()) {
+            case R.id.AddTuitionDayMenuItem:
+                addTuitionDayDialog = new AddTuitionDayDialog(getActivity(), new AddTuitionDayDialogCallBackHandler());
+                addTuitionDayDialog.setCancelable(false);
+                addTuitionDayDialog.show();
+                break;
+            case R.id.DeleteAllTuitionDaysMenuItem:
+                Toast.makeText(getActivity(), "Delete all tuition days", Toast.LENGTH_SHORT).show();
+                break;
+        }
+    }
+
+    @Override
+    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+        Log.d(DEBUG_TAG, String.format("date input = %d/%d/%d", dayOfMonth, monthOfYear, year));
+    }
 
     public class AddTuitionDayDialogCallBackHandler implements AddTuitionDayDialogCallBacks{
 
