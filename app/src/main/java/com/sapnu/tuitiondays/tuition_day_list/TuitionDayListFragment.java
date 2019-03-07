@@ -1,10 +1,6 @@
-package com.sapnu.tuitiondays;
+package com.sapnu.tuitiondays.tuition_day_list;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -12,6 +8,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.sapnu.tuitiondays.entity.CurrentShowingFragmentName;
+import com.sapnu.tuitiondays.entity.MyFragment;
+import com.sapnu.tuitiondays.entity.MyFragmentListener;
+import com.sapnu.tuitiondays.R;
+import com.sapnu.tuitiondays.database.DatabaseManager;
 
 public class TuitionDayListFragment extends MyFragment {
     private static final String DEBUG_TAG = "[GPTuitionDayListFrag]";
@@ -22,18 +24,18 @@ public class TuitionDayListFragment extends MyFragment {
         // Required empty public constructor
     }
 
-    void setMyFragmentListener(MyFragmentListener myFragmentListener){
+    public void setMyFragmentListener(MyFragmentListener myFragmentListener){
         this.myFragmentListener = myFragmentListener;
     }
 
     @Override
-    boolean handleBackButtonPressed() {
+    public boolean handleBackButtonPressed() {
         myFragmentListener.changeFragmentTo(CurrentShowingFragmentName.TUITION_LIST);
         return true;
     }
 
     @Override
-    void handleMenuItemSelection(MenuItem menuItem) {
+    public void handleMenuItemSelection(MenuItem menuItem) {
         switch (menuItem.getItemId()){
             case R.id.AddTuitionDayMenuItem:
                 Toast.makeText(getActivity(), "Add Tuition Day", Toast.LENGTH_SHORT).show();

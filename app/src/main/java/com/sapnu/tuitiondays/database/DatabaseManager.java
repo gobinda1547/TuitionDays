@@ -1,9 +1,12 @@
-package com.sapnu.tuitiondays;
+package com.sapnu.tuitiondays.database;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Base64;
 import android.util.Log;
+
+import com.sapnu.tuitiondays.entity.CurrentShowingFragmentName;
+import com.sapnu.tuitiondays.entity.TuitionObject;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -12,7 +15,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
-class DatabaseManager {
+public class DatabaseManager {
     private static final String DEBUG_TAG = "[GPDatabaseManager]";
 
     private static final String SHARED_PREF_TAG_FOR_CURRENT_FRAGMENT_NAME = "CURRENT_FRAGMENT_NAME_TAG";
@@ -29,11 +32,11 @@ class DatabaseManager {
     private SharedPreferences sharedPreferencesForTuitionList;
     private SharedPreferences sharedPreferencesForTuitionNameSelected;
 
-    static DatabaseManager getInstance(){
+    public static DatabaseManager getInstance(){
         return databaseManager;
     }
 
-    static void initializeDatabaseManager(Context context){
+    public static void initializeDatabaseManager(Context context){
         databaseManager = new DatabaseManager();
         databaseManager.setSharedPreferencesForSavingFragmentName(context.getSharedPreferences(SHARED_PREF_TAG_FOR_CURRENT_FRAGMENT_NAME, Context.MODE_PRIVATE));
         databaseManager.setSharedPreferencesForTuitionList(context.getSharedPreferences(SHARED_PREF_TAG_FOR_TUITION_LIST, Context.MODE_PRIVATE));
@@ -51,7 +54,7 @@ class DatabaseManager {
         this.sharedPreferencesForTuitionNameSelected = sharedPreferencesForTuitionNameSelected;
     }
 
-    void storeCurrentShowingFragmentName(CurrentShowingFragmentName currentShowingFragmentName) {
+    public void storeCurrentShowingFragmentName(CurrentShowingFragmentName currentShowingFragmentName) {
         try {
             //Initialize serialized data
             ByteArrayOutputStream serializedData = new ByteArrayOutputStream();
@@ -70,7 +73,7 @@ class DatabaseManager {
     }
 
     @SuppressWarnings("unchecked")
-    CurrentShowingFragmentName getCurrentShowingFragmentName() {
+    public CurrentShowingFragmentName getCurrentShowingFragmentName() {
         CurrentShowingFragmentName currentShowingFragmentName = null;
 
         String serializedData = sharedPreferencesForSavingFragmentName.getString(SHARED_PREF_KEY_FOR_CURRENT_FRAGMENT_NAME, null);
@@ -131,7 +134,7 @@ class DatabaseManager {
         }
     }
 
-    void addTuition(String tuitionName){
+    public void addTuition(String tuitionName){
         TuitionObject currentTuitionObject = new TuitionObject(tuitionName, new ArrayList<String>());
         this.tuitionList.add(0, currentTuitionObject); //adding in the first position
 
@@ -141,7 +144,7 @@ class DatabaseManager {
         this.storeTuitionList();
     }
 
-    void addTuitionDay(String tuitionName, String day){
+    public void addTuitionDay(String tuitionName, String day){
         int totalTuition = tuitionList.size();
         for(int i=0;i<totalTuition;i++){
             if(tuitionList.get(i).getTuitionName().equals(tuitionName)){
@@ -154,7 +157,7 @@ class DatabaseManager {
         this.storeTuitionList();
     }
 
-    void deleteTuition(String tuitionName){
+    public void deleteTuition(String tuitionName){
         int totalTuition = tuitionList.size();
         for(int i=0;i<totalTuition;i++){
             if(tuitionList.get(i).getTuitionName().equals(tuitionName)){
@@ -167,7 +170,7 @@ class DatabaseManager {
         this.storeTuitionList();
     }
 
-    void deleteTuitionDay(String tuitionName, String tuitionDay){
+    public void deleteTuitionDay(String tuitionName, String tuitionDay){
         int totalTuition = tuitionList.size();
         for(int i=0;i<totalTuition;i++){
             if(tuitionList.get(i).getTuitionName().equals(tuitionName)){
@@ -180,11 +183,11 @@ class DatabaseManager {
         this.storeTuitionList();
     }
 
-    ArrayList<TuitionObject> getTuitionList(){
+    public ArrayList<TuitionObject> getTuitionList(){
         return tuitionList;
     }
 
-    ArrayList<String> getTuitionNameList(){
+    public ArrayList<String> getTuitionNameList(){
         ArrayList<String> tuitionNames = new ArrayList<>();
         int totalTuition = tuitionList.size();
         for(int i=0;i<totalTuition;i++){
@@ -193,7 +196,7 @@ class DatabaseManager {
         return tuitionNames;
     }
 
-    ArrayList<String> getTuitionDayList(String tuitionName){
+    public ArrayList<String> getTuitionDayList(String tuitionName){
         int totalTuition = tuitionList.size();
         for(int i=0;i<totalTuition;i++){
             if(tuitionList.get(i).getTuitionName().equals(tuitionName)){
@@ -205,7 +208,7 @@ class DatabaseManager {
 
 
 
-    void storeTuitionNameSelected(String tuitionName) {
+    public void storeTuitionNameSelected(String tuitionName) {
         try {
             ByteArrayOutputStream serializedData = new ByteArrayOutputStream();
             ObjectOutputStream serializer = new ObjectOutputStream(serializedData);
@@ -223,7 +226,7 @@ class DatabaseManager {
     }
 
     @SuppressWarnings("unchecked")
-    String getTuitionNameSelectedValue() {
+    public String getTuitionNameSelectedValue() {
         String serializedData = sharedPreferencesForTuitionNameSelected.getString(SHARED_PREF_KEY_FOR_TUITION_NAME_SELECTED, null);
         if(serializedData == null){
             Log.d(DEBUG_TAG, "serialize data is nil.");

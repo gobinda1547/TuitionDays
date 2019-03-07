@@ -17,8 +17,14 @@ import android.view.View;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
+import com.sapnu.tuitiondays.database.DatabaseManager;
+import com.sapnu.tuitiondays.entity.CurrentShowingFragmentName;
+import com.sapnu.tuitiondays.entity.MyFragment;
+import com.sapnu.tuitiondays.tuition_day_list.TuitionDayListFragment;
+import com.sapnu.tuitiondays.tuition_list.TuitionListFragment;
+import com.sapnu.tuitiondays.entity.MyFragmentListener;
 
-public class MainActivity extends AppCompatActivity implements MyFragmentListener{
+public class MainActivity extends AppCompatActivity implements MyFragmentListener {
     private static final String DEBUG_TAG = "[GPMainActivity]";
 
     private static boolean MOBILE_ADS_INITIALIZED = false;

@@ -1,9 +1,8 @@
-package com.sapnu.tuitiondays;
+package com.sapnu.tuitiondays.tuition_list;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,6 +15,13 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.sapnu.tuitiondays.entity.CurrentShowingFragmentName;
+import com.sapnu.tuitiondays.entity.MyFragment;
+import com.sapnu.tuitiondays.entity.MyFragmentListener;
+import com.sapnu.tuitiondays.R;
+import com.sapnu.tuitiondays.database.DatabaseManager;
+import com.sapnu.tuitiondays.entity.TuitionObject;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -27,6 +33,8 @@ public class TuitionListFragment extends MyFragment {
     private MyFragmentListener myFragmentListener;
 
     private RecyclerView recyclerView;
+
+    private AddTuitionNameDialog addTuitionNameDialog;
 
     public TuitionListFragment() {
         // Required empty public constructor
@@ -65,23 +73,23 @@ public class TuitionListFragment extends MyFragment {
     }
 
     @Override
-    void setMyFragmentListener(MyFragmentListener myFragmentListener) {
+    public void setMyFragmentListener(MyFragmentListener myFragmentListener) {
         this.myFragmentListener = myFragmentListener;
     }
 
     @Override
-    boolean handleBackButtonPressed() {
+    public boolean handleBackButtonPressed() {
         //in this fragment there is no task
         return false;
     }
 
     @Override
-    void handleMenuItemSelection(MenuItem menuItem) {
+    public void handleMenuItemSelection(MenuItem menuItem) {
         switch (menuItem.getItemId()){
             case R.id.AddNewTuitionMenuItem:
-                DatabaseManager.getInstance().addTuition(getCurrentTimeAsString());
-                Toast.makeText(getActivity(), "Add New Tuition", Toast.LENGTH_SHORT).show();
-                refreshRecycleView();
+                addTuitionNameDialog = new AddTuitionNameDialog(getActivity(), new AddNewTuitionDialogCallBackHandler());
+                addTuitionNameDialog.setCancelable(false);
+                addTuitionNameDialog.show();
                 break;
         }
     }
@@ -110,7 +118,8 @@ public class TuitionListFragment extends MyFragment {
         public void onBindViewHolder(@NonNull final TuitionListViewHolder tuitionListViewHolder, @SuppressLint("RecyclerView") int i) {
             TuitionObject currentTuitionObject = tuitionObjectArrayList.get(i);
             tuitionListViewHolder.showTuitionNameTextView.setText(currentTuitionObject.getTuitionName());
-            tuitionListViewHolder.showTuitionTotalDayTextView.setText("Total day : "+String.valueOf(currentTuitionObject.getTuitionDays().size()));
+            @SuppressLint("DefaultLocale") String totalDaysString = String.format("Total days : %d", currentTuitionObject.getTuitionDays().size());
+            tuitionListViewHolder.showTuitionTotalDayTextView.setText(totalDaysString);
         }
 
         class TuitionListViewHolder extends RecyclerView.ViewHolder{
@@ -152,10 +161,26 @@ public class TuitionListFragment extends MyFragment {
         }
     }
 
-    private String getCurrentTimeAsString(){
-        @SuppressLint("SimpleDateFormat")
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-        return sdf.format(new Date());
+    public class AddNewTuitionDialogCallBackHandler implements AddNewTuitionDialogCallBacks {
+
+        @Override
+        public void dialogCancelPressed() {
+            addTuitionNameDialog.dismiss();
+        }
+
+        @Override
+        public void dialogSavePressed(String tuitionName) {
+            if(tuitionName.length() == 0){
+                Toast.makeText(getActivity(), "Name is Empty", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            Log.d(DEBUG_TAG, "storing tuition name  = [" + tuitionName +"]");
+            Toast.makeText(getActivity(), "Tuition name added successfully", Toast.LENGTH_SHORT).show();
+            DatabaseManager.getInstance().addTuition(tuitionName);
+            addTuitionNameDialog.dismiss();
+
+            refreshRecycleView();
+        }
     }
 
 

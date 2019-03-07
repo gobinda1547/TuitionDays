@@ -1,30 +1,30 @@
-package com.sapnu.tuitiondays;
+package com.sapnu.tuitiondays.entity;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 
-class TuitionObject implements Serializable {
+public class TuitionObject implements Serializable {
     private String tuitionName;
     private ArrayList<String> tuitionDays;
 
-    TuitionObject(String tuitionName, ArrayList<String> tuitionDays){
+    public TuitionObject(String tuitionName, ArrayList<String> tuitionDays){
         this.tuitionName = tuitionName;
         this.tuitionDays = tuitionDays;
     }
 
-    void addDay(String day){
+    public void addDay(String day){
         tuitionDays.add(day);
     }
 
-    void removeDay(String day){
+    public void removeDay(String day){
         tuitionDays.remove(day);
     }
 
-    String getTuitionName(){
+    public String getTuitionName(){
         return tuitionName;
     }
 
-    ArrayList<String> getTuitionDays(){
+    public ArrayList<String> getTuitionDays(){
         return tuitionDays;
     }
 }

@@ -1,4 +1,4 @@
-package com.sapnu.tuitiondays;
+package com.sapnu.tuitiondays.entity;
 
 import java.io.Serializable;
 
