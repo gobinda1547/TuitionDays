@@ -22,10 +22,7 @@ import com.sapnu.tuitiondays.R;
 import com.sapnu.tuitiondays.database.DatabaseManager;
 import com.sapnu.tuitiondays.entity.TuitionObject;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-
 
 public class TuitionListFragment extends MyFragment {
     private static final String DEBUG_TAG = "[GPTuitionListFragment]";
@@ -131,17 +128,20 @@ public class TuitionListFragment extends MyFragment {
             private TuitionListViewHolder(View itemView) {
                 super(itemView);
 
-                showTuitionNameTextView = itemView.findViewById(R.id.ShowTuitionNameTextView);
-                showTuitionTotalDayTextView = itemView.findViewById(R.id.ShowTuitionTotalDayTextView);
-                deleteTuitionNameImageButton = itemView.findViewById(R.id.DeleteTuitionNameImageButton);
-
-                showTuitionNameTextView.setOnClickListener(v -> {
+                //setting click listener above overall cardview
+                itemView.findViewById(R.id.EachTuitionDetailsCardView).setOnClickListener(view ->  {
+                    Log.d(DEBUG_TAG, "card view pressed");
                     DatabaseManager.getInstance().storeTuitionNameSelected(showTuitionNameTextView.getText().toString());
                     Log.d(DEBUG_TAG, "requesting for showing tuition day list");
                     myFragmentListener.changeFragmentTo(CurrentShowingFragmentName.TUITION_DAY_LIST);
                 });
 
+                showTuitionNameTextView = itemView.findViewById(R.id.ShowTuitionNameTextView);
+                showTuitionTotalDayTextView = itemView.findViewById(R.id.ShowTuitionTotalDayTextView);
+                deleteTuitionNameImageButton = itemView.findViewById(R.id.DeleteTuitionNameImageButton);
+
                 deleteTuitionNameImageButton.setOnClickListener(v -> {
+                    Log.d(DEBUG_TAG, "delete button pressed");
                     //taking user permission for delete by showing dialog box
                     AlertDialog.Builder builder2 = new AlertDialog.Builder(getActivity());
                     builder2.setTitle("Delete this tuition info.");
