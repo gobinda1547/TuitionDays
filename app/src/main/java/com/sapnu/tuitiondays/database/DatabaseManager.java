@@ -135,7 +135,7 @@ public class DatabaseManager {
     }
 
     public void addTuition(String tuitionName){
-        TuitionObject currentTuitionObject = new TuitionObject(tuitionName, new ArrayList<String>());
+        TuitionObject currentTuitionObject = new TuitionObject(tuitionName, new ArrayList<>());
         this.tuitionList.add(0, currentTuitionObject); //adding in the first position
 
         Log.d(DEBUG_TAG, "before storing size = "+ String.valueOf(tuitionList.size()));
@@ -187,15 +187,6 @@ public class DatabaseManager {
         return tuitionList;
     }
 
-    public ArrayList<String> getTuitionNameList(){
-        ArrayList<String> tuitionNames = new ArrayList<>();
-        int totalTuition = tuitionList.size();
-        for(int i=0;i<totalTuition;i++){
-            tuitionNames.add(tuitionList.get(i).getTuitionName());
-        }
-        return tuitionNames;
-    }
-
     public boolean checkIfTuitionNameAlreadyExist(String tuitionName){
         int totalTuition = tuitionList.size();
         for(int i=0;i<totalTuition;i++){
@@ -213,10 +204,8 @@ public class DatabaseManager {
                 return tuitionList.get(i).getTuitionDays();
             }
         }
-        return new ArrayList<String>();
+        return new ArrayList<>();
     }
-
-
 
     public void storeTuitionNameSelected(String tuitionName) {
         try {
