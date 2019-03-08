@@ -13,7 +13,7 @@ public class TuitionObject implements Serializable {
     }
 
     public void addDay(String day){
-        tuitionDays.add(day);
+        tuitionDays.add(0, day);
     }
 
     public void removeDay(String day){
