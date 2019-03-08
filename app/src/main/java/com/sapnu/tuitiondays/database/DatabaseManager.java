@@ -196,6 +196,16 @@ public class DatabaseManager {
         return tuitionNames;
     }
 
+    public boolean checkIfTuitionNameAlreadyExist(String tuitionName){
+        int totalTuition = tuitionList.size();
+        for(int i=0;i<totalTuition;i++){
+            if(tuitionName.equals(tuitionList.get(i).getTuitionName())){
+                return true;
+            }
+        }
+        return false;
+    }
+
     public ArrayList<String> getTuitionDayList(String tuitionName){
         int totalTuition = tuitionList.size();
         for(int i=0;i<totalTuition;i++){

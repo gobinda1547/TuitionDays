@@ -174,6 +174,10 @@ public class TuitionListFragment extends MyFragment {
                 Toast.makeText(getActivity(), "Name is Empty", Toast.LENGTH_SHORT).show();
                 return;
             }
+            if(DatabaseManager.getInstance().checkIfTuitionNameAlreadyExist(tuitionName)){
+                Toast.makeText(getActivity(), "Name can't be duplicate", Toast.LENGTH_SHORT).show();
+                return;
+            }
             Log.d(DEBUG_TAG, "storing tuition name  = [" + tuitionName +"]");
             Toast.makeText(getActivity(), "Tuition name added successfully", Toast.LENGTH_SHORT).show();
             DatabaseManager.getInstance().addTuition(tuitionName);
