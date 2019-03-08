@@ -20,6 +20,10 @@ public class TuitionObject implements Serializable {
         tuitionDays.remove(day);
     }
 
+    public void removeAllDays(){
+        tuitionDays = new ArrayList<>();
+    }
+
     public String getTuitionName(){
         return tuitionName;
     }

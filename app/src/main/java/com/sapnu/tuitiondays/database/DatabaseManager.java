@@ -183,6 +183,19 @@ public class DatabaseManager {
         this.storeTuitionList();
     }
 
+    public void deleteAllTuitionDay(String tuitionName){
+        int totalTuition = tuitionList.size();
+        for(int i=0;i<totalTuition;i++){
+            if(tuitionList.get(i).getTuitionName().equals(tuitionName)){
+                tuitionList.get(i).removeAllDays();
+                break;
+            }
+        }
+
+        //If tuitionList changed then update it
+        this.storeTuitionList();
+    }
+
     public ArrayList<TuitionObject> getTuitionList(){
         return tuitionList;
     }

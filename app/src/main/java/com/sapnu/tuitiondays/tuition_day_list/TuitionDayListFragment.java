@@ -81,23 +81,37 @@ public class TuitionDayListFragment extends MyFragment implements DatePickerDial
                 addTuitionDayDialog.show();
                 break;
             case R.id.DeleteAllTuitionDaysMenuItem:
-                Toast.makeText(getActivity(), "Delete all tuition days", Toast.LENGTH_SHORT).show();
+                deleteAllTuitionDaysForCurrentlySelectedTuitionName();
                 break;
         }
     }
 
+    public void deleteAllTuitionDaysForCurrentlySelectedTuitionName(){
+        //taking user permission to delete all the tuition dates
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Warning...");
+        builder.setMessage("Are you sure to delete all the tuition dates for "+selectedTuitionName+"?");
+        builder.setPositiveButton("YES", (dialog, which) -> {
+            DatabaseManager.getInstance().deleteAllTuitionDay(selectedTuitionName);
+            Toast.makeText(getActivity(), "Deleted all tuition days", Toast.LENGTH_SHORT).show();
+            dialog.dismiss();
+            refreshRecycleView();
+        });
+        builder.setNegativeButton("NO", (dialog, which) -> dialog.dismiss());
+
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
     @Override
     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
         Log.d(DEBUG_TAG, String.format("date input = %d/%d/%d", dayOfMonth, monthOfYear, year));
     }
-
 
     public void refreshRecycleView(){
         ArrayList<String> tuitionDayList = DatabaseManager.getInstance().getTuitionDayList(selectedTuitionName);
         MyRecyclerViewAdapter recyclerViewAdapter = new MyRecyclerViewAdapter(tuitionDayList);
         recyclerView.setAdapter(recyclerViewAdapter);
     }
-
 
     public class MyRecyclerViewAdapter extends RecyclerView.Adapter<TuitionDayListFragment.MyRecyclerViewAdapter.TuitionDayListViewHolder> {
 
@@ -139,7 +153,7 @@ public class TuitionDayListFragment extends MyFragment implements DatePickerDial
 
                     //taking user permission for delete by showing dialog box
                     AlertDialog.Builder builder2 = new AlertDialog.Builder(getActivity());
-                    builder2.setTitle("Delete " + showTuitionDateTextView.getText().toString());
+                    builder2.setTitle(showTuitionDateTextView.getText().toString());
                     builder2.setMessage("Are you sure to delete this tuition date forever?");
                     builder2.setPositiveButton("YES", (dialog, which) -> {
                         String tuitionName = DatabaseManager.getInstance().getTuitionNameSelectedValue();
