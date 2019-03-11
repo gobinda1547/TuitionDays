@@ -6,6 +6,7 @@ import android.util.Base64;
 import android.util.Log;
 
 import com.sapnu.tuitiondays.entity.MyFragmentNames;
+import com.sapnu.tuitiondays.entity.TuitionDateObject;
 import com.sapnu.tuitiondays.entity.TuitionObject;
 
 import java.io.ByteArrayInputStream;
@@ -144,11 +145,10 @@ public class DatabaseManager {
         this.storeTuitionList();
     }
 
-    public void addTuitionDay(String tuitionName, String day){
-        int totalTuition = tuitionList.size();
-        for(int i=0;i<totalTuition;i++){
+    public void addTuitionDay(String tuitionName, TuitionDateObject date){
+        for(int i=0;i<tuitionList.size();i++){
             if(tuitionList.get(i).getTuitionName().equals(tuitionName)){
-                tuitionList.get(i).addDay(day);
+                tuitionList.get(i).addDate(date);
                 break;
             }
         }
@@ -210,11 +210,11 @@ public class DatabaseManager {
         return false;
     }
 
-    public ArrayList<String> getTuitionDayList(String tuitionName){
+    public ArrayList<TuitionDateObject> getTuitionDateList(String tuitionName){
         int totalTuition = tuitionList.size();
         for(int i=0;i<totalTuition;i++){
             if(tuitionList.get(i).getTuitionName().equals(tuitionName)){
-                return tuitionList.get(i).getTuitionDays();
+                return tuitionList.get(i).getTuitionDates();
             }
         }
         return new ArrayList<>();

@@ -5,30 +5,35 @@ import java.util.ArrayList;
 
 public class TuitionObject implements Serializable {
     private String tuitionName;
-    private ArrayList<String> tuitionDays;
+    private ArrayList<TuitionDateObject> tuitionDateObjects;
 
-    public TuitionObject(String tuitionName, ArrayList<String> tuitionDays){
+    public TuitionObject(String tuitionName, ArrayList<TuitionDateObject> tuitionDateObjects){
         this.tuitionName = tuitionName;
-        this.tuitionDays = tuitionDays;
+        this.tuitionDateObjects = tuitionDateObjects;
     }
 
-    public void addDay(String day){
-        tuitionDays.add(0, day);
+    public void addDate(TuitionDateObject dateObject){
+        tuitionDateObjects.add(0, dateObject);
     }
 
     public void removeDay(String day){
-        tuitionDays.remove(day);
+        for(int i=0;i<tuitionDateObjects.size();i++){
+            if(tuitionDateObjects.get(i).getDate().equals(day)){
+                tuitionDateObjects.remove(i);
+                return;
+            }
+        }
     }
 
     public void removeAllDays(){
-        tuitionDays = new ArrayList<>();
+        tuitionDateObjects = new ArrayList<>();
     }
 
     public String getTuitionName(){
         return tuitionName;
     }
 
-    public ArrayList<String> getTuitionDays(){
-        return tuitionDays;
+    public ArrayList<TuitionDateObject> getTuitionDates(){
+        return tuitionDateObjects;
     }
 }

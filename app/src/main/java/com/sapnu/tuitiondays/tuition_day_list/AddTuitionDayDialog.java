@@ -10,6 +10,7 @@ import android.view.Window;
 import android.widget.DatePicker;
 
 import com.sapnu.tuitiondays.R;
+import com.sapnu.tuitiondays.entity.TuitionDateObject;
 
 public class AddTuitionDayDialog extends Dialog {
     private static final String DEBUG = "[AddTuitionNameDialog]";
@@ -44,7 +45,9 @@ public class AddTuitionDayDialog extends Dialog {
 
             @SuppressLint("DefaultLocale") String selection = String.format("%d / %d / %d", year, month, day);
             Log.d(DEBUG, selection);
-            callBacks.dialogSavePressed(selection);
+
+            TuitionDateObject tuitionDateObject = new TuitionDateObject(selection, "No comments");
+            callBacks.dialogSavePressed(tuitionDateObject);
         });
 
     }

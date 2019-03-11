@@ -21,12 +21,12 @@ import com.sapnu.tuitiondays.entity.MyFragment;
 import com.sapnu.tuitiondays.entity.MyFragmentCallBacks;
 import com.sapnu.tuitiondays.R;
 import com.sapnu.tuitiondays.database.DatabaseManager;
+import com.sapnu.tuitiondays.entity.TuitionDateObject;
 
 import java.util.ArrayList;
 
 public class TuitionDayListFragment extends MyFragment implements DatePickerDialog.OnDateSetListener {
     private static final String DEBUG_TAG = "[GPTuitionDayListFrag]";
-
 
     private String selectedTuitionName = null;
     private RecyclerView recyclerView;
@@ -34,6 +34,8 @@ public class TuitionDayListFragment extends MyFragment implements DatePickerDial
     private MyFragmentCallBacks myFragmentCallBacks;
 
     private AddTuitionDayDialog addTuitionDayDialog;
+    private TextView showTuitionNameTextView;
+    private TextView showTuitionTotalDatesTextView;
 
     public TuitionDayListFragment() {
         // Required empty public constructor
@@ -42,6 +44,8 @@ public class TuitionDayListFragment extends MyFragment implements DatePickerDial
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_tuition_day_list, container, false);
+        showTuitionNameTextView = view.findViewById(R.id.ShowTuitionNameTextView2);
+        showTuitionTotalDatesTextView = view.findViewById(R.id.ShowTuitionTotalDayTextView2);
         recyclerView = view.findViewById(R.id.TuitionDayListRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         return view;
@@ -102,28 +106,32 @@ public class TuitionDayListFragment extends MyFragment implements DatePickerDial
         AlertDialog alert = builder.create();
         alert.show();
     }
+
     @Override
     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
         Log.d(DEBUG_TAG, String.format("date input = %d/%d/%d", dayOfMonth, monthOfYear, year));
     }
 
     public void refreshRecycleView(){
-        ArrayList<String> tuitionDayList = DatabaseManager.getInstance().getTuitionDayList(selectedTuitionName);
-        MyRecyclerViewAdapter recyclerViewAdapter = new MyRecyclerViewAdapter(tuitionDayList);
+        ArrayList<TuitionDateObject> tuitionDateList = DatabaseManager.getInstance().getTuitionDateList(selectedTuitionName);
+        MyRecyclerViewAdapter recyclerViewAdapter = new MyRecyclerViewAdapter(tuitionDateList);
         recyclerView.setAdapter(recyclerViewAdapter);
+
+        showTuitionNameTextView.setText(selectedTuitionName);
+        showTuitionTotalDatesTextView.setText(String.valueOf(tuitionDateList.size()));
     }
 
     public class MyRecyclerViewAdapter extends RecyclerView.Adapter<TuitionDayListFragment.MyRecyclerViewAdapter.TuitionDayListViewHolder> {
 
-        private ArrayList<String> tuitionDaysArrayList;
+        private ArrayList<TuitionDateObject> tuitionDatesArrayList;
 
-        private MyRecyclerViewAdapter(ArrayList<String> tuitionDaysArrayList) {
-            this.tuitionDaysArrayList = tuitionDaysArrayList;
+        private MyRecyclerViewAdapter(ArrayList<TuitionDateObject> tuitionDatesArrayList) {
+            this.tuitionDatesArrayList = tuitionDatesArrayList;
         }
 
         @Override
         public int getItemCount() {
-            return tuitionDaysArrayList.size();
+            return tuitionDatesArrayList.size();
         }
 
         @NonNull
@@ -135,18 +143,21 @@ public class TuitionDayListFragment extends MyFragment implements DatePickerDial
 
         @Override
         public void onBindViewHolder(@NonNull final TuitionDayListFragment.MyRecyclerViewAdapter.TuitionDayListViewHolder tuitionDayListViewHolder, @SuppressLint("RecyclerView") int i) {
-            String currentTuitionDate = tuitionDaysArrayList.get(i);
-            tuitionDayListViewHolder.showTuitionDateTextView.setText(currentTuitionDate);
+            TuitionDateObject currentTuitionDate = tuitionDatesArrayList.get(i);
+            tuitionDayListViewHolder.showTuitionDateTextView.setText(currentTuitionDate.getDate());
+            tuitionDayListViewHolder.showTuitionDateCommentTextView.setText(currentTuitionDate.getComment());
         }
 
         class TuitionDayListViewHolder extends RecyclerView.ViewHolder {
 
             private TextView showTuitionDateTextView;
+            private TextView showTuitionDateCommentTextView;
 
             private TuitionDayListViewHolder(View itemView) {
                 super(itemView);
 
                 showTuitionDateTextView = itemView.findViewById(R.id.ShowTuitionDateTextView);
+                showTuitionDateCommentTextView = itemView.findViewById(R.id.ShowParticularTuitionDateComment);
 
                 itemView.findViewById(R.id.DeleteTuitionDateImageButton).setOnClickListener(v -> {
                     Log.d(DEBUG_TAG, "delete button pressed");
@@ -181,7 +192,14 @@ public class TuitionDayListFragment extends MyFragment implements DatePickerDial
         }
 
         @Override
-        public void dialogSavePressed(String date) {
+        public void dialogSavePressed(TuitionDateObject date) {
+            ArrayList<TuitionDateObject> dateObjects = DatabaseManager.getInstance().getTuitionDateList(selectedTuitionName);
+            for(int i= 0;i<dateObjects.size();i++){
+                if(dateObjects.get(i).getDate().equals(date.getDate())){
+                    Toast.makeText(getActivity(), "Date can't be Duplicate", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+            }
             Log.d(DEBUG_TAG, "selected string " + date);
             DatabaseManager.getInstance().addTuitionDay(selectedTuitionName, date);
             refreshRecycleView();

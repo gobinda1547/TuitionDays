@@ -15,5 +15,6 @@
     <string name="menu_item_delete_all_day">Delete all Day</string>
     <string name="add_new_tution">Add New Tution</string>
     <string name="tution_day_list">tution day list</string>
+    <string name="writeComment">No comments</string>
 
 </resources>

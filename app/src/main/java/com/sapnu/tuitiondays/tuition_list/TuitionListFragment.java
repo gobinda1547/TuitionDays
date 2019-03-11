@@ -115,7 +115,7 @@ public class TuitionListFragment extends MyFragment {
         public void onBindViewHolder(@NonNull final TuitionListViewHolder tuitionListViewHolder, @SuppressLint("RecyclerView") int i) {
             TuitionObject currentTuitionObject = tuitionObjectArrayList.get(i);
             tuitionListViewHolder.showTuitionNameTextView.setText(currentTuitionObject.getTuitionName());
-            @SuppressLint("DefaultLocale") String totalDaysString = String.format("Total days : %d", currentTuitionObject.getTuitionDays().size());
+            @SuppressLint("DefaultLocale") String totalDaysString = String.format("Total days : %d", currentTuitionObject.getTuitionDates().size());
             tuitionListViewHolder.showTuitionTotalDayTextView.setText(totalDaysString);
         }
 
