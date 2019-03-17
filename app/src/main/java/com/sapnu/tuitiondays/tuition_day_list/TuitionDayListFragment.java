@@ -175,8 +175,8 @@ public class TuitionDayListFragment extends MyFragment implements DatePickerDial
                 showTuitionDateTextView = itemView.findViewById(R.id.ShowTuitionDateTextView);
                 showTuitionDateCommentTextView = itemView.findViewById(R.id.ShowParticularTuitionDateComment);
 
-                itemView.findViewById(R.id.DeleteTuitionDateImageButton).setOnClickListener(v -> {
-                    Log.d(DEBUG_TAG, "delete button pressed");
+                itemView.setOnLongClickListener(view -> {
+                    Log.d(DEBUG_TAG, "inside Long Click Listener");
 
                     //taking user permission for delete by showing dialog box
                     AlertDialog.Builder builder2 = new AlertDialog.Builder(getActivity());
@@ -194,7 +194,9 @@ public class TuitionDayListFragment extends MyFragment implements DatePickerDial
 
                     AlertDialog alert2 = builder2.create();
                     alert2.show();
+                    return true;
                 });
+
             }
         }
     }
