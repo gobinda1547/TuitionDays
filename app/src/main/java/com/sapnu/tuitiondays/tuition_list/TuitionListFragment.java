@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -23,6 +24,8 @@ import com.sapnu.tuitiondays.database.DatabaseManager;
 import com.sapnu.tuitiondays.entity.TuitionObject;
 
 import java.util.ArrayList;
+import java.util.Locale;
+import java.util.Objects;
 
 public class TuitionListFragment extends MyFragment {
     private static final String DEBUG_TAG = "[GPTuitionListFragment]";
@@ -40,6 +43,10 @@ public class TuitionListFragment extends MyFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //setting title for the activity
+        String title = String.format(Locale.getDefault(), "%s","Tuition List");
+        Objects.requireNonNull(((AppCompatActivity) getActivity()).getSupportActionBar()).setTitle(title);
     }
 
     @Override

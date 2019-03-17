@@ -4,7 +4,9 @@ import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -24,6 +26,8 @@ import com.sapnu.tuitiondays.database.DatabaseManager;
 import com.sapnu.tuitiondays.entity.TuitionDateObject;
 
 import java.util.ArrayList;
+import java.util.Locale;
+import java.util.Objects;
 
 public class TuitionDayListFragment extends MyFragment implements DatePickerDialog.OnDateSetListener {
     private static final String DEBUG_TAG = "[GPTuitionDayListFrag]";
@@ -39,6 +43,18 @@ public class TuitionDayListFragment extends MyFragment implements DatePickerDial
 
     public TuitionDayListFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        selectedTuitionName = DatabaseManager.getInstance().getTuitionNameSelectedValue();
+        int totalDays = DatabaseManager.getInstance().getTuitionDateList(selectedTuitionName).size();
+
+        //setting title for the activity
+        String title = String.format(Locale.getDefault(),"%s (%d)", selectedTuitionName, totalDays);
+        Objects.requireNonNull(((AppCompatActivity) getActivity()).getSupportActionBar()).setTitle(title);
     }
 
     @Override
@@ -61,7 +77,7 @@ public class TuitionDayListFragment extends MyFragment implements DatePickerDial
     public void onResume() {
         super.onResume();
         Log.d(DEBUG_TAG, "onResume called");
-        selectedTuitionName = DatabaseManager.getInstance().getTuitionNameSelectedValue();
+
         refreshRecycleView();
     }
 
