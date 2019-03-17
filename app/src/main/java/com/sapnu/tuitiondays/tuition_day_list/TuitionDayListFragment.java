@@ -103,6 +103,13 @@ public class TuitionDayListFragment extends MyFragment implements DatePickerDial
     }
 
     public void deleteAllTuitionDaysForCurrentlySelectedTuitionName(){
+
+        //if there is no days then return
+        if(DatabaseManager.getInstance().getTuitionDateList(selectedTuitionName).size() <= 0){
+            Toast.makeText(getActivity(), "No records to delete.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        
         //taking user permission to delete all the tuition dates
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Warning...");
