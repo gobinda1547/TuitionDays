@@ -38,8 +38,6 @@ public class TuitionDayListFragment extends MyFragment implements DatePickerDial
     private MyFragmentCallBacks myFragmentCallBacks;
 
     private AddTuitionDayDialog addTuitionDayDialog;
-    private TextView showTuitionNameTextView;
-    private TextView showTuitionTotalDatesTextView;
 
     public TuitionDayListFragment() {
         // Required empty public constructor
@@ -60,8 +58,6 @@ public class TuitionDayListFragment extends MyFragment implements DatePickerDial
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_tuition_day_list, container, false);
-        showTuitionNameTextView = view.findViewById(R.id.ShowTuitionNameTextView2);
-        showTuitionTotalDatesTextView = view.findViewById(R.id.ShowTuitionTotalDayTextView2);
         recyclerView = view.findViewById(R.id.TuitionDayListRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         return view;
@@ -132,9 +128,6 @@ public class TuitionDayListFragment extends MyFragment implements DatePickerDial
         ArrayList<TuitionDateObject> tuitionDateList = DatabaseManager.getInstance().getTuitionDateList(selectedTuitionName);
         MyRecyclerViewAdapter recyclerViewAdapter = new MyRecyclerViewAdapter(tuitionDateList);
         recyclerView.setAdapter(recyclerViewAdapter);
-
-        showTuitionNameTextView.setText(selectedTuitionName);
-        showTuitionTotalDatesTextView.setText(String.valueOf(tuitionDateList.size()));
     }
 
     public class MyRecyclerViewAdapter extends RecyclerView.Adapter<TuitionDayListFragment.MyRecyclerViewAdapter.TuitionDayListViewHolder> {
