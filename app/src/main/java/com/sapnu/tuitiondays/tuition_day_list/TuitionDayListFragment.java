@@ -26,7 +26,6 @@ import com.sapnu.tuitiondays.database.DatabaseManager;
 import com.sapnu.tuitiondays.entity.TuitionDateObject;
 
 import java.util.ArrayList;
-import java.util.Locale;
 import java.util.Objects;
 
 public class TuitionDayListFragment extends MyFragment implements DatePickerDialog.OnDateSetListener {
@@ -38,6 +37,7 @@ public class TuitionDayListFragment extends MyFragment implements DatePickerDial
     private MyFragmentCallBacks myFragmentCallBacks;
 
     private AddTuitionDayDialog addTuitionDayDialog;
+    private UpdateTuitionDayDialog updateTuitionDayDialog;
 
     public TuitionDayListFragment() {
         // Required empty public constructor
@@ -158,13 +158,12 @@ public class TuitionDayListFragment extends MyFragment implements DatePickerDial
 
         @Override
         public void onBindViewHolder(@NonNull final TuitionDayListFragment.MyRecyclerViewAdapter.TuitionDayListViewHolder tuitionDayListViewHolder, @SuppressLint("RecyclerView") int i) {
-            TuitionDateObject currentTuitionDate = tuitionDatesArrayList.get(i);
-            tuitionDayListViewHolder.showTuitionDateTextView.setText(currentTuitionDate.getDate());
-            tuitionDayListViewHolder.showTuitionDateCommentTextView.setText(currentTuitionDate.getComment());
-            tuitionDayListViewHolder.showSerialNumberTextView.setText(String.valueOf(totalTuitionDays - i));
+            tuitionDayListViewHolder.display(tuitionDatesArrayList.get(i) , i);
         }
 
         class TuitionDayListViewHolder extends RecyclerView.ViewHolder {
+
+            private int position;
 
             private TextView showTuitionDateTextView;
             private TextView showTuitionDateCommentTextView;
@@ -176,6 +175,15 @@ public class TuitionDayListFragment extends MyFragment implements DatePickerDial
                 showTuitionDateTextView = itemView.findViewById(R.id.ShowTuitionDateTextView);
                 showTuitionDateCommentTextView = itemView.findViewById(R.id.ShowParticularTuitionDateComment);
                 showSerialNumberTextView = itemView.findViewById(R.id.SerialNumberTextView);
+
+                itemView.setOnClickListener(view -> {
+                    Log.d(DEBUG_TAG, "inside Normal Click Listener");
+
+                    updateTuitionDayDialog = new UpdateTuitionDayDialog(getActivity(), new UpdateTuitionDayDialogCallBackHandler());
+                    updateTuitionDayDialog.updateView(tuitionDatesArrayList.get(position));
+                    updateTuitionDayDialog.setCancelable(false);
+                    updateTuitionDayDialog.show();
+                });
 
                 itemView.setOnLongClickListener(view -> {
                     Log.d(DEBUG_TAG, "inside Long Click Listener");
@@ -200,6 +208,29 @@ public class TuitionDayListFragment extends MyFragment implements DatePickerDial
                 });
 
             }
+
+            private void display(TuitionDateObject currentTuitionDate, int position){
+                this.position = position;
+
+                showTuitionDateTextView.setText(currentTuitionDate.getDate());
+                showTuitionDateCommentTextView.setText(currentTuitionDate.getComment());
+                showSerialNumberTextView.setText(String.valueOf(totalTuitionDays - position));
+            }
+        }
+    }
+
+
+    public class UpdateTuitionDayDialogCallBackHandler implements UpdateTuitionDayDialogCallBacks {
+
+        @Override
+        public void dialogCancelPressed() {
+            Log.d(DEBUG_TAG, "cancel update dialog call back received.");
+            updateTuitionDayDialog.dismiss();
+        }
+
+        @Override
+        public void dialogUpdatePressed(TuitionDateObject previous, TuitionDateObject current) {
+
         }
     }
 
