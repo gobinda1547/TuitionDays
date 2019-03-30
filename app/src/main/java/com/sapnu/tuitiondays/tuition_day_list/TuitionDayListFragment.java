@@ -140,9 +140,11 @@ public class TuitionDayListFragment extends MyFragment implements DatePickerDial
     public class MyRecyclerViewAdapter extends RecyclerView.Adapter<TuitionDayListFragment.MyRecyclerViewAdapter.TuitionDayListViewHolder> {
 
         private ArrayList<TuitionDateObject> tuitionDatesArrayList;
+        private int totalTuitionDays;
 
         private MyRecyclerViewAdapter(ArrayList<TuitionDateObject> tuitionDatesArrayList) {
             this.tuitionDatesArrayList = tuitionDatesArrayList;
+            this.totalTuitionDays = tuitionDatesArrayList.size();
         }
 
         @Override
@@ -162,18 +164,21 @@ public class TuitionDayListFragment extends MyFragment implements DatePickerDial
             TuitionDateObject currentTuitionDate = tuitionDatesArrayList.get(i);
             tuitionDayListViewHolder.showTuitionDateTextView.setText(currentTuitionDate.getDate());
             tuitionDayListViewHolder.showTuitionDateCommentTextView.setText(currentTuitionDate.getComment());
+            tuitionDayListViewHolder.showSerialNumberTextView.setText(String.valueOf(totalTuitionDays - i));
         }
 
         class TuitionDayListViewHolder extends RecyclerView.ViewHolder {
 
             private TextView showTuitionDateTextView;
             private TextView showTuitionDateCommentTextView;
+            private TextView showSerialNumberTextView;
 
             private TuitionDayListViewHolder(View itemView) {
                 super(itemView);
 
                 showTuitionDateTextView = itemView.findViewById(R.id.ShowTuitionDateTextView);
                 showTuitionDateCommentTextView = itemView.findViewById(R.id.ShowParticularTuitionDateComment);
+                showSerialNumberTextView = itemView.findViewById(R.id.SerialNumberTextView);
 
                 itemView.setOnLongClickListener(view -> {
                     Log.d(DEBUG_TAG, "inside Long Click Listener");
