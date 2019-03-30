@@ -47,12 +47,9 @@ public class TuitionDayListFragment extends MyFragment implements DatePickerDial
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        selectedTuitionName = DatabaseManager.getInstance().getTuitionNameSelectedValue();
-        int totalDays = DatabaseManager.getInstance().getTuitionDateList(selectedTuitionName).size();
-
         //setting title for the activity
-        String title = String.format(Locale.getDefault(),"%s (%d)", selectedTuitionName, totalDays);
-        Objects.requireNonNull(((AppCompatActivity) getActivity()).getSupportActionBar()).setTitle(title);
+        selectedTuitionName = DatabaseManager.getInstance().getTuitionNameSelectedValue();
+        Objects.requireNonNull(((AppCompatActivity) getActivity()).getSupportActionBar()).setTitle(selectedTuitionName);
     }
 
     @Override
