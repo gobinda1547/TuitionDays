@@ -14,23 +14,25 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="30dp"
-            android:text="Add Tuition Name"
+            android:text="@string/add_tuition_name"
             android:textSize="20sp"
+            android:textColor="#000000"
             android:gravity="center_horizontal"
             android:textStyle="bold"
-            android:background="@color/colorAccent"
+            android:background="#e4ecbf"
             android:layout_margin="5dp"/>
 
         <EditText
             android:id="@+id/EnterTuitionNameEditText"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:hint="Enter Tuition Name"
+            android:hint="@string/enter_tuition_name"
             android:textSize="18sp"
             android:inputType="textMultiLine|textCapSentences"
             tools:ignore="Autofill"
             android:background="@null"
-            android:layout_margin="5dp"/>
+            android:layout_margin="5dp"
+            android:padding="5dp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -45,7 +47,7 @@
                 android:layout_weight="5"
                 android:layout_margin="2dp"
                 style="?android:attr/button"
-                android:text="Cancel"/>
+                android:text="@string/cancel"/>
 
             <Button
                 android:id="@+id/SaveTuitionNameDialog"
@@ -54,7 +56,7 @@
                 android:layout_weight="5"
                 android:layout_margin="2dp"
                 style="?android:attr/button"
-                android:text="Save"/>
+                android:text="@string/save"/>
 
 
 
