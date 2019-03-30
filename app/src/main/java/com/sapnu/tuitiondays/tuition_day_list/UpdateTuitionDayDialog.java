@@ -28,7 +28,7 @@ public class UpdateTuitionDayDialog extends Dialog {
         this.callBacks = callBacks;
     }
 
-    public void updateView(TuitionDateObject previous){
+    void updateView(TuitionDateObject previous){
         this.previous = previous;
 
         String dateString = previous.getDate();
