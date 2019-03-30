@@ -17,9 +17,9 @@
     <string name="tution_day_list">tution day list</string>
     <string name="writeComment">No comments</string>
     <string name="add_comment">Add Comment</string>
-    <string name="cancel">Cancel</string>
-    <string name="save">Save</string>
     <string name="add_tuition_name">Add Tuition Name</string>
     <string name="enter_tuition_name">Enter Tuition Name</string>
+    <string name="cancel">Cancel</string>
+    <string name="save">Save</string>
 
 </resources>

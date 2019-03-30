@@ -21,7 +21,8 @@
             android:paddingStart="10dp"
             android:paddingEnd="0dp"
             android:text="@string/tuition_name_example"
-            android:textSize="20sp"/>
+            android:textSize="20sp"
+            android:textColor="#000000"/>
 
         <TextView
             android:id="@+id/ShowTuitionTotalDayTextView"
@@ -34,7 +35,8 @@
             android:paddingStart="10dp"
             android:paddingEnd="0dp"
             android:text="@string/tuition_name_example"
-            android:textSize="15sp"/>
+            android:textSize="15sp"
+            android:textColor="#000000"/>
 
         <ImageButton
             android:id="@+id/DeleteTuitionNameImageButton"
