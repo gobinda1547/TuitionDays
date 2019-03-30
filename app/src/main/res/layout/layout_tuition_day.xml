@@ -10,18 +10,22 @@
     <RelativeLayout
         android:id="@+id/relativeLayout"
         android:layout_width="match_parent"
-        android:layout_height="20dp"
+        android:layout_height="25dp"
         android:layout_alignParentTop="true">
+
         <TextView
             android:id="@+id/ShowTuitionDateTextView"
             android:layout_width="match_parent"
-            android:layout_height="20dp"
+            android:layout_height="25dp"
             android:gravity="center_vertical"
             android:paddingLeft="5dp"
             android:paddingRight="0dp"
             android:paddingStart="5dp"
             android:paddingEnd="0dp"
-            android:text="@string/date_example"/>
+            android:text="@string/date_example"
+            android:textColor="#000000"
+            android:textSize="18sp"
+            android:background="#e4ecbf"/>
 
     </RelativeLayout>
 
@@ -30,8 +34,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="15sp"
+        android:textColor="#000000"
         android:text="@string/writeComment"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="25dp"
         android:paddingLeft="5dp"
         android:paddingRight="5dp"
         android:paddingBottom="2dp"

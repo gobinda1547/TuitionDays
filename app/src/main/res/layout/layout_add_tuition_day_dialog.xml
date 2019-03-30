@@ -12,33 +12,52 @@
 
         <DatePicker
             android:id="@+id/AddTuitionDayDatePicker"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="1dp"
+            android:datePickerMode="spinner"
+            android:calendarViewShown="false">
         </DatePicker>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:orientation="horizontal"
-            android:weightSum="10">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-            <Button
-                android:id="@+id/CancleTuitionDayDialog"
+            <EditText
+                android:id="@+id/EditTextForComments"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="5"
-                android:layout_margin="1dp"
-                style="?android:attr/button"
-                android:text="Cancel"/>
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:padding="5dp"
+                android:background="#e4ecbf"
+                android:hint="@string/add_comment"
+                android:inputType="textMultiLine"/>
 
-            <Button
-                android:id="@+id/SaveTuitionDayDialog"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="5"
-                android:layout_margin="1dp"
-                style="?android:attr/button"
-                android:text="Save"/>
+                android:layout_height="50dp"
+                android:orientation="horizontal"
+                android:weightSum="10">
+
+                <Button
+                    android:id="@+id/CancleTuitionDayDialog"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="5"
+                    style="?android:attr/button"
+                    android:text="@string/cancel"/>
+
+                <Button
+                    android:id="@+id/SaveTuitionDayDialog"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="5"
+                    style="?android:attr/button"
+                    android:text="@string/save"/>
+
+            </LinearLayout>
 
         </LinearLayout>
 
