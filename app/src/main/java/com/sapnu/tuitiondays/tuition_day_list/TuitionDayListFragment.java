@@ -179,8 +179,7 @@ public class TuitionDayListFragment extends MyFragment implements DatePickerDial
                 itemView.setOnClickListener(view -> {
                     Log.d(DEBUG_TAG, "inside Normal Click Listener");
 
-                    updateTuitionDayDialog = new UpdateTuitionDayDialog(getActivity(), new UpdateTuitionDayDialogCallBackHandler());
-                    updateTuitionDayDialog.updateView(tuitionDatesArrayList.get(position));
+                    updateTuitionDayDialog = new UpdateTuitionDayDialog(getActivity(), new UpdateTuitionDayDialogCallBackHandler(), tuitionDatesArrayList.get(position));
                     updateTuitionDayDialog.setCancelable(false);
                     updateTuitionDayDialog.show();
                 });
