@@ -27,6 +27,11 @@ public class AddTuitionDayDialog extends Dialog {
     }
 
     @Override
+    public void onBackPressed() {
+        callBacks.backButtonPressed();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);

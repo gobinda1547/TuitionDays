@@ -157,6 +157,24 @@ public class DatabaseManager {
         this.storeTuitionList();
     }
 
+    public void updateTuitionDay(String tuitionName, TuitionDateObject previous, TuitionDateObject current){
+        for(int i=0;i<tuitionList.size();i++){
+            if(tuitionList.get(i).getTuitionName().equals(tuitionName)){
+                for(int j=0;j<tuitionList.get(i).getTuitionDates().size();j++){
+                    if(tuitionList.get(i).getTuitionDates().get(j).getDate().equals(previous.getDate())){
+                        tuitionList.get(i).getTuitionDates().get(j).setDate(current.getDate());
+                        tuitionList.get(i).getTuitionDates().get(j).setComment(current.getComment());
+                        break;
+                    }
+                }
+                break;
+            }
+        }
+
+        //tuitionList has changed so update it
+        this.storeTuitionList();
+    }
+
     public void deleteTuition(String tuitionName){
         int totalTuition = tuitionList.size();
         for(int i=0;i<totalTuition;i++){

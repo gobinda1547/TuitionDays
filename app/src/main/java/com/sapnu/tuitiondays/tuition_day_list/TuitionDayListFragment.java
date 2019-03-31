@@ -222,6 +222,12 @@ public class TuitionDayListFragment extends MyFragment implements DatePickerDial
     public class UpdateTuitionDayDialogCallBackHandler implements UpdateTuitionDayDialogCallBacks {
 
         @Override
+        public void backButtonPressed() {
+            Log.d(DEBUG_TAG, "back button pressed, cancel update dialog call back received.");
+            updateTuitionDayDialog.dismiss();
+        }
+
+        @Override
         public void dialogCancelPressed() {
             Log.d(DEBUG_TAG, "cancel update dialog call back received.");
             updateTuitionDayDialog.dismiss();
@@ -229,11 +235,30 @@ public class TuitionDayListFragment extends MyFragment implements DatePickerDial
 
         @Override
         public void dialogUpdatePressed(TuitionDateObject previous, TuitionDateObject current) {
+            if(!previous.getDate().equals(current.getDate())){
+                ArrayList<TuitionDateObject> dateObjects = DatabaseManager.getInstance().getTuitionDateList(selectedTuitionName);
+                for(int i= 0;i<dateObjects.size();i++){
+                    if(dateObjects.get(i).getDate().equals(current.getDate())){
+                        Toast.makeText(getActivity(), "Date can't be Duplicate", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                }
+            }
 
+            DatabaseManager.getInstance().updateTuitionDay(selectedTuitionName, previous, current);
+            Toast.makeText(getActivity(), "Successfully updated", Toast.LENGTH_SHORT).show();
+            refreshRecycleView();
+            updateTuitionDayDialog.dismiss();
         }
     }
 
     public class AddTuitionDayDialogCallBackHandler implements AddTuitionDayDialogCallBacks {
+
+        @Override
+        public void backButtonPressed() {
+            Log.d(DEBUG_TAG, "back button pressed, dialog dismiss");
+            addTuitionDayDialog.dismiss();
+        }
 
         @Override
         public void dialogCancelPressed() {

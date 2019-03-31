@@ -15,6 +15,14 @@ public class TuitionDateObject implements Serializable {
         return date;
     }
 
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
     public String getComment() {
         return comment;
     }
